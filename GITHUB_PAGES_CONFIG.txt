@@ -1,0 +1,43 @@
+HTML_DIR = assets/css
+JS_DIR = js
+CONFIG_DIR = config
+
+# Files
+FILES_TO_CREATE = [
+    "index.html",
+    "assets/css/style.css",
+    "config/auth-config.js",
+    "js/excel-api.js",
+    "js/app.js",
+    "_config.yml"
+]
+
+# Step-by-step setup
+SETUP_STEPS = """
+1. Register Azure AD Application
+   - Go to Azure Portal
+   - Register new app
+   - Add Microsoft Graph permissions
+   - Copy Client ID
+
+2. Configure the App
+   - Edit config/auth-config.js
+   - Add your Client ID
+   - Update redirect URI to your GitHub Pages URL
+
+3. Prepare Excel
+   - Create workbook with ServiceRequests table
+   - Upload to SharePoint/OneDrive
+   - Get file path and IDs
+
+4. Deploy to GitHub
+   - Push files to GitHub
+   - Enable GitHub Pages in Settings
+   - Verify site is live
+
+5. Test the App
+   - Open your GitHub Pages URL
+   - Login with Microsoft account
+   - Create a test request
+   - Verify it appears in Excel
+"""

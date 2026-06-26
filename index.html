@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Request Portal</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-brand">
+                    <h1>Service Request Portal</h1>
+                </div>
+                <div class="navbar-menu">
+                    <ul class="nav-links">
+                        <li><a href="#" onclick="navigateTo('home')" class="nav-link active">Dashboard</a></li>
+                        <li><a href="#" onclick="navigateTo('requests')" class="nav-link">Requests</a></li>
+                        <li><a href="#" onclick="navigateTo('create')" class="nav-link">Create</a></li>
+                        <li><button id="loginBtn" class="btn-primary" onclick="loginWithMicrosoft()">Login</button></li>
+                        <li><span id="userInfo" class="user-info" style="display:none;"></span></li>
+                        <li><button id="logoutBtn" class="btn-secondary" onclick="logout()" style="display:none;">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Home Screen -->
+                <div id="homeScreen" class="screen active">
+                    <h2>Dashboard</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <h3>Total Requests</h3>
+                            <div class="metric-value" id="totalRequests">0</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Open Requests</h3>
+                            <div class="metric-value" id="openRequests">0</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>High Priority</h3>
+                            <div class="metric-value" id="highPriority">0</div>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Assigned to Me</h3>
+                            <div class="metric-value" id="myRequests">0</div>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="navigateTo('requests')">View All Requests</button>
+                    <button class="btn-primary" onclick="navigateTo('create')" style="margin-left: 10px;">Create New Request</button>
+                </div>
+
+                <!-- Requests List Screen -->
+                <div id="requestsScreen" class="screen">
+                    <h2>Service Requests</h2>
+                    <div class="controls-bar">
+                        <input type="text" id="searchBox" placeholder="Search by ID or customer..." class="search-input" onkeyup="filterRequests()">
+                        <select id="statusFilter" class="filter-select" onchange="filterRequests()">
+                            <option value="">All Status</option>
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                        <button class="btn-secondary" onclick="refreshData()">Refresh</button>
+                    </div>
+                    <div id="requestsList" class="requests-list">
+                        <p>Loading requests...</p>
+                    </div>
+                </div>
+
+                <!-- Create Request Screen -->
+                <div id="createScreen" class="screen">
+                    <h2>Create New Service Request</h2>
+                    <form id="createForm" class="form" onsubmit="submitRequest(event)">
+                        <div class="form-group">
+                            <label for="customerInput">Customer Name *</label>
+                            <input type="text" id="customerInput" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceTypeInput">Service Type *</label>
+                            <select id="serviceTypeInput" required>
+                                <option value="">Select...</option>
+                                <option value="Network Support">Network Support</option>
+                                <option value="Software Update">Software Update</option>
+                                <option value="Hardware Repair">Hardware Repair</option>
+                                <option value="Account Management">Account Management</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="priorityInput">Priority</label>
+                            <select id="priorityInput">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignedInput">Assign To</label>
+                            <select id="assignedInput">
+                                <option value="Unassigned">Unassigned</option>
+                                <option value="Alice">Alice</option>
+                                <option value="Bob">Bob</option>
+                                <option value="Charlie">Charlie</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="descriptionInput">Description</label>
+                            <textarea id="descriptionInput" rows="4"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary">Create Request</button>
+                            <button type="button" class="btn-secondary" onclick="navigateTo('requests')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Request Detail Screen -->
+                <div id="detailScreen" class="screen">
+                    <h2 id="detailTitle">Request Details</h2>
+                    <div id="detailContent" class="detail-content"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Notifications -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <!-- Microsoft MSAL.js -->
+    <script src="https://alcdn.msauth.net/browser/2.26.0/js/msal-browser.min.js"></script>
+
+    <!-- App Scripts -->
+    <script src="config/auth-config.js"></script>
+    <script src="js/excel-api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

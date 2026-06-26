@@ -1,0 +1,24 @@
+# GitHub Pages Deployment Configuration
+
+Basic GitHub Pages configuration for the Service Request Portal.
+
+theme: slate
+plugins:
+  - jekyll-sitemap
+
+# Build settings
+markdown: kramdown
+exclude:
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - README.md
+  - LICENSE
+
+# GitHub Pages settings
+github: [metadata]

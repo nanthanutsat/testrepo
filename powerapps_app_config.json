@@ -1,0 +1,281 @@
+{
+  "appName": "ServiceRequestPortal",
+  "appId": "00000000-0000-0000-0000-000000000000",
+  "version": "1.0",
+  "screens": {
+    "HomeScreen": {
+      "name": "HomeScreen",
+      "title": "Service Request Dashboard",
+      "controls": [
+        {
+          "name": "HeaderLabel",
+          "type": "Label",
+          "properties": {
+            "text": "Service Request Portal",
+            "fontSize": 32,
+            "fontWeight": "bold",
+            "color": "#0078D4"
+          }
+        },
+        {
+          "name": "TotalRequestsCard",
+          "type": "Card",
+          "properties": {
+            "title": "Total Requests",
+            "value": "=CountRows(ServiceRequests)"
+          }
+        },
+        {
+          "name": "OpenRequestsCard",
+          "type": "Card",
+          "properties": {
+            "title": "Open Requests",
+            "value": "=CountIf(ServiceRequests, Status=\"Open\")"
+          }
+        },
+        {
+          "name": "HighPriorityCard",
+          "type": "Card",
+          "properties": {
+            "title": "High Priority",
+            "value": "=CountIf(ServiceRequests, Priority=\"High\")"
+          }
+        },
+        {
+          "name": "MyRequestsCard",
+          "type": "Card",
+          "properties": {
+            "title": "Assigned to Me",
+            "value": "=CountIf(ServiceRequests, 'Assigned To'=User().Email)"
+          }
+        }
+      ]
+    },
+    "RequestsListScreen": {
+      "name": "RequestsListScreen",
+      "title": "Service Requests",
+      "controls": [
+        {
+          "name": "HeaderLabel",
+          "type": "Label",
+          "properties": {
+            "text": "All Service Requests",
+            "fontSize": 28,
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "name": "SearchBox",
+          "type": "TextInput",
+          "properties": {
+            "placeholder": "Search by ID or customer...",
+            "width": "100%"
+          }
+        },
+        {
+          "name": "StatusFilter",
+          "type": "Dropdown",
+          "properties": {
+            "items": [
+              "All",
+              "Open",
+              "In Progress",
+              "Closed"
+            ],
+            "defaultValue": "All"
+          }
+        },
+        {
+          "name": "RequestsGallery",
+          "type": "Gallery",
+          "properties": {
+            "items": "=Filter(ServiceRequests, If(StatusFilter.Value=\"All\", true, Status=StatusFilter.Value))",
+            "layout": "List",
+            "fields": [
+              {
+                "name": "requestId",
+                "header": "Request ID"
+              },
+              {
+                "name": "customer",
+                "header": "Customer"
+              },
+              {
+                "name": "serviceType",
+                "header": "Service Type"
+              },
+              {
+                "name": "status",
+                "header": "Status"
+              },
+              {
+                "name": "priority",
+                "header": "Priority"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "CreateRequestScreen": {
+      "name": "CreateRequestScreen",
+      "title": "Create Service Request",
+      "controls": [
+        {
+          "name": "FormTitle",
+          "type": "Label",
+          "properties": {
+            "text": "New Service Request",
+            "fontSize": 28,
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "name": "CustomerInput",
+          "type": "TextInput",
+          "properties": {
+            "label": "Customer Name",
+            "required": true
+          }
+        },
+        {
+          "name": "ServiceTypeDropdown",
+          "type": "Dropdown",
+          "properties": {
+            "label": "Service Type",
+            "items": [
+              "Network Support",
+              "Software Update",
+              "Hardware Repair",
+              "Account Management"
+            ],
+            "required": true
+          }
+        },
+        {
+          "name": "PriorityDropdown",
+          "type": "Dropdown",
+          "properties": {
+            "label": "Priority",
+            "items": [
+              "Low",
+              "Medium",
+              "High",
+              "Critical"
+            ],
+            "defaultValue": "Medium"
+          }
+        },
+        {
+          "name": "AssignedToDropdown",
+          "type": "Dropdown",
+          "properties": {
+            "label": "Assign To",
+            "items": [
+              "Alice",
+              "Bob",
+              "Charlie",
+              "Unassigned"
+            ],
+            "defaultValue": "Unassigned"
+          }
+        },
+        {
+          "name": "DescriptionInput",
+          "type": "TextArea",
+          "properties": {
+            "label": "Description",
+            "height": 150
+          }
+        },
+        {
+          "name": "SubmitButton",
+          "type": "Button",
+          "properties": {
+            "text": "Create Request",
+            "onSelect": "=Patch(ServiceRequests, Defaults(ServiceRequests), {customer: CustomerInput.Value, serviceType: ServiceTypeDropdown.Value, priority: PriorityDropdown.Value, 'Assigned To': AssignedToDropdown.Value}); Navigate(RequestsListScreen, ScreenTransition.Fade)"
+          }
+        }
+      ]
+    },
+    "RequestDetailScreen": {
+      "name": "RequestDetailScreen",
+      "title": "Request Details",
+      "controls": [
+        {
+          "name": "BackButton",
+          "type": "Button",
+          "properties": {
+            "text": "\u2190 Back",
+            "onSelect": "Navigate(RequestsListScreen, ScreenTransition.Fade)"
+          }
+        },
+        {
+          "name": "HeaderLabel",
+          "type": "Label",
+          "properties": {
+            "text": "=Concatenate('Request ID: ', selectedRequest.'Request ID')",
+            "fontSize": 24,
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "name": "CustomerLabel",
+          "type": "Label",
+          "properties": {
+            "text": "=Concatenate('Customer: ', selectedRequest.customer)"
+          }
+        },
+        {
+          "name": "ServiceTypeLabel",
+          "type": "Label",
+          "properties": {
+            "text": "=Concatenate('Service Type: ', selectedRequest.'Service Type')"
+          }
+        },
+        {
+          "name": "StatusDropdown",
+          "type": "Dropdown",
+          "properties": {
+            "label": "Status",
+            "items": [
+              "Open",
+              "In Progress",
+              "Closed"
+            ],
+            "defaultValue": "=selectedRequest.Status"
+          }
+        },
+        {
+          "name": "UpdateButton",
+          "type": "Button",
+          "properties": {
+            "text": "Update Request",
+            "onSelect": "=Patch(ServiceRequests, selectedRequest, {Status: StatusDropdown.Value}); Navigate(RequestsListScreen, ScreenTransition.Fade)"
+          }
+        }
+      ]
+    }
+  },
+  "datasources": [
+    {
+      "name": "ServiceRequests",
+      "type": "ExcelOnline",
+      "library": "Shared Documents",
+      "file": "ServiceRequestWorkbook.xlsx",
+      "table": "ServiceRequests"
+    }
+  ],
+  "connections": [
+    {
+      "type": "ExcelOnline",
+      "name": "Excel_ServiceRequests"
+    }
+  ],
+  "variables": {
+    "global": {
+      "selectedRequest": null,
+      "refreshing": false
+    }
+  }
+}
