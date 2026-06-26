@@ -1,0 +1,59 @@
+{
+  "worksheetId": "sheet_requests",
+  "name": "Requests",
+  "tables": [
+    {
+      "id": "tbl_requests",
+      "name": "ServiceRequests",
+      "worksheetId": "sheet_requests",
+      "columns": [
+        { "key": "requestId", "header": "Request ID", "type": "string" },
+        { "key": "customer", "header": "Customer", "type": "string" },
+        { "key": "serviceType", "header": "Service Type", "type": "string" },
+        { "key": "status", "header": "Status", "type": "string" },
+        { "key": "priority", "header": "Priority", "type": "string" },
+        { "key": "requestDate", "header": "Request Date", "type": "date" },
+        { "key": "assignedTo", "header": "Assigned To", "type": "string" },
+        { "key": "daysOpen", "header": "Days Open", "type": "number", "formula": "=TODAY() - [@[Request Date]]" }
+      ],
+      "rows": [
+        {
+          "id": "row_1",
+          "values": {
+            "requestId": "REQ-1001",
+            "customer": "Acme Corp",
+            "serviceType": "Network Support",
+            "status": "Open",
+            "priority": "High",
+            "requestDate": "2026-06-01",
+            "assignedTo": "Alice",
+            "daysOpen": {
+              "formula": "=TODAY() - [@[Request Date]]",
+              "references": [
+                { "worksheet": "Requests", "table": "ServiceRequests", "column": "Request Date" }
+              ]
+            }
+          }
+        },
+        {
+          "id": "row_2",
+          "values": {
+            "requestId": "REQ-1002",
+            "customer": "Beta LLC",
+            "serviceType": "Software Update",
+            "status": "Closed",
+            "priority": "Medium",
+            "requestDate": "2026-06-02",
+            "assignedTo": "Bob",
+            "daysOpen": {
+              "formula": "=TODAY() - [@[Request Date]]",
+              "references": [
+                { "worksheet": "Requests", "table": "ServiceRequests", "column": "Request Date" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

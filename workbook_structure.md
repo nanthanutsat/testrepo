@@ -208,7 +208,134 @@ This document describes a test-friendly data model for an Excel workbook with mu
 }
 ```
 
-## 4. Recommended test environment pattern
+## 4. Service request workbook example
+
+This example shows the two worksheets you described:
+- `Requests`: a database table for every service request.
+- `Dashboard`: a summary worksheet that reads results from the `Requests` table.
+
+```json
+{
+  "name": "ServiceRequestWorkbook",
+  "worksheets": [
+    {
+      "id": "sheet_requests",
+      "name": "Requests",
+      "tables": [
+        {
+          "id": "tbl_requests",
+          "name": "ServiceRequests",
+          "worksheetId": "sheet_requests",
+          "columns": [
+            { "key": "requestId", "header": "Request ID", "type": "string" },
+            { "key": "customer", "header": "Customer", "type": "string" },
+            { "key": "serviceType", "header": "Service Type", "type": "string" },
+            { "key": "status", "header": "Status", "type": "string" },
+            { "key": "priority", "header": "Priority", "type": "string" },
+            { "key": "requestDate", "header": "Request Date", "type": "date" },
+            { "key": "assignedTo", "header": "Assigned To", "type": "string" }
+          ],
+          "rows": [
+            {
+              "id": "row_1",
+              "values": {
+                "requestId": "REQ-1001",
+                "customer": "Acme Corp",
+                "serviceType": "Network Support",
+                "status": "Open",
+                "priority": "High",
+                "requestDate": "2026-06-01",
+                "assignedTo": "Alice"
+              }
+            },
+            {
+              "id": "row_2",
+              "values": {
+                "requestId": "REQ-1002",
+                "customer": "Beta LLC",
+                "serviceType": "Software Update",
+                "status": "Closed",
+                "priority": "Medium",
+                "requestDate": "2026-06-02",
+                "assignedTo": "Bob"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sheet_dashboard",
+      "name": "Dashboard",
+      "tables": [
+        {
+          "id": "tbl_dashboard",
+          "name": "DashboardMetrics",
+          "worksheetId": "sheet_dashboard",
+          "columns": [
+            { "key": "metric", "header": "Metric", "type": "string" },
+            { "key": "value", "header": "Value", "type": "number" },
+            { "key": "formula", "header": "Formula", "type": "string" }
+          ],
+          "rows": [
+            {
+              "id": "row_1",
+              "values": {
+                "metric": "Total Requests",
+                "value": {
+                  "formula": "=ROWS(ServiceRequests)"
+                },
+                "formula": "=ROWS(ServiceRequests)"
+              }
+            },
+            {
+              "id": "row_2",
+              "values": {
+                "metric": "Open Requests",
+                "value": {
+                  "formula": "=COUNTIF(ServiceRequests[Status], \"Open\")"
+                },
+                "formula": "=COUNTIF(ServiceRequests[Status], \"Open\")"
+              }
+            },
+            {
+              "id": "row_3",
+              "values": {
+                "metric": "High Priority",
+                "value": {
+                  "formula": "=COUNTIFS(ServiceRequests[Priority], \"High\")"
+                },
+                "formula": "=COUNTIFS(ServiceRequests[Priority], \"High\")"
+              }
+            },
+            {
+              "id": "row_4",
+              "values": {
+                "metric": "Assigned to Alice",
+                "value": {
+                  "formula": "=COUNTIFS(ServiceRequests[Assigned To], \"Alice\")"
+                },
+                "formula": "=COUNTIFS(ServiceRequests[Assigned To], \"Alice\")"
+              }
+            }
+          ]
+        }
+      ],
+      "cells": [
+        {
+          "address": "B2",
+          "formula": "=ROWS(ServiceRequests)",
+          "references": [
+            { "worksheet": "Requests", "table": "ServiceRequests" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## 5. Recommended test environment pattern
 
 1. Model each worksheet and table separately.
 2. Store formulas as expressions plus explicit references.

@@ -1,0 +1,58 @@
+{
+  "worksheetId": "sheet_dashboard",
+  "name": "Dashboard",
+  "tables": [
+    {
+      "id": "tbl_dashboard",
+      "name": "DashboardMetrics",
+      "worksheetId": "sheet_dashboard",
+      "columns": [
+        { "key": "metric", "header": "Metric", "type": "string" },
+        { "key": "value", "header": "Value", "type": "number" },
+        { "key": "formula", "header": "Formula", "type": "string" }
+      ],
+      "rows": [
+        {
+          "id": "row_1",
+          "values": {
+            "metric": "Total Requests",
+            "value": {
+              "formula": "=ROWS(ServiceRequests)"
+            },
+            "formula": "=ROWS(ServiceRequests)"
+          }
+        },
+        {
+          "id": "row_2",
+          "values": {
+            "metric": "Open Requests",
+            "value": {
+              "formula": "=COUNTIF(ServiceRequests[Status], \"Open\")"
+            },
+            "formula": "=COUNTIF(ServiceRequests[Status], \"Open\")"
+          }
+        },
+        {
+          "id": "row_3",
+          "values": {
+            "metric": "High Priority",
+            "value": {
+              "formula": "=COUNTIFS(ServiceRequests[Priority], \"High\")"
+            },
+            "formula": "=COUNTIFS(ServiceRequests[Priority], \"High\")"
+          }
+        },
+        {
+          "id": "row_4",
+          "values": {
+            "metric": "Assigned to Alice",
+            "value": {
+              "formula": "=COUNTIFS(ServiceRequests[Assigned To], \"Alice\")"
+            },
+            "formula": "=COUNTIFS(ServiceRequests[Assigned To], \"Alice\")"
+          }
+        }
+      ]
+    }
+  ]
+}

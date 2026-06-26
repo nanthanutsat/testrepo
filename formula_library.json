@@ -1,0 +1,27 @@
+{
+  "daysOpen": {
+    "description": "Calculate days open from request date.",
+    "template": "=TODAY()-[@[Request Date]]",
+    "scope": "column"
+  },
+  "totalRequests": {
+    "description": "Count all rows in ServiceRequests.",
+    "template": "=ROWS(ServiceRequests)",
+    "scope": "dashboard"
+  },
+  "openRequests": {
+    "description": "Count open requests in ServiceRequests.",
+    "template": "=COUNTIF(ServiceRequests[Status], \"Open\")",
+    "scope": "dashboard"
+  },
+  "highPriorityRequests": {
+    "description": "Count high-priority requests in ServiceRequests.",
+    "template": "=COUNTIFS(ServiceRequests[Priority], \"High\")",
+    "scope": "dashboard"
+  },
+  "assignedToAlice": {
+    "description": "Count requests assigned to Alice.",
+    "template": "=COUNTIFS(ServiceRequests[Assigned To], \"Alice\")",
+    "scope": "dashboard"
+  }
+}
